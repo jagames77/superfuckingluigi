@@ -4,8 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>superfuckingluigi</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        
+        h1 {
+            color: black;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .slide-container {
+            overflow: hidden;
+            height: 400px;
+            margin-top: 20px;
+        }
+        
+        .sliding-image {
+            height: 100%;
+            animation: slide 5s linear infinite;
+        }
+        
+        .sliding-image img {
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        @keyframes slide {
+            0% {
+                transform: translateX(100vw);
+            }
+            100% {
+                transform: translateX(-400px);
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>superfuckingluigi</h1>
+    <div class="slide-container">
+        <div class="sliding-image">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="Luigi">
+        </div>
+    </div>
 </body>
 </html>
