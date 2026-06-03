@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Reviews</title>
+    <title>Reviews</title>
     <style>
         body {
             margin: 0;
@@ -37,42 +37,38 @@
         }
         
         .review {
-            border: 1px solid #ccc;
+            border: 2px outset #dfdfdf;
             padding: 15px;
             margin: 20px 0;
-            background-color: #f9f9f9;
-        }
-        
-        .review-author {
-            font-weight: bold;
-            color: black;
+            background-color: #c0c0c0;
+            display: inline-block;
         }
         
         .review-rating {
-            color: #ff9800;
-            font-size: 18px;
-            margin: 10px 0;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
         
         .review-text {
-            color: #333;
-            margin: 10px 0;
+            color: black;
+            margin: 0;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="nav-buttons">
         <button onclick="window.location.href='index.html'">home</button>
-        <button onclick="window.location.href='reviews.html'">customer reviews</button>
-        <button>deals</button>
+        <button onclick="window.location.href='reviews.html'">reviews</button>
     </div>
     
-    <h1>Customer Reviews</h1>
+    <h1>Reviews</h1>
     
     <div class="review">
-        <div class="review-author">John Smith</div>
-        <div class="review-rating">★★★★★★★★★★ 10/10</div>
-        <div class="review-text">This is absolutely incredible! Best website I've ever seen. The sliding Luigi animation is perfection. Highly recommend!</div>
+        <div class="review-rating">10/10</div>
+        <div class="review-text">This website is absolutely amazing! Luigi sliding across the screen is perfection!</div>
     </div>
 </body>
 </html>
