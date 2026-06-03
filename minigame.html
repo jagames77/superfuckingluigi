@@ -28,7 +28,7 @@
             height: 800px;
             background-color: #0d0d0d;
             border: 3px solid #333333;
-            overflow: hidden;
+            overflow: visible;
         }
         
         #player {
@@ -40,6 +40,7 @@
             background-color: #333333;
             border: 2px solid #666666;
             transition: none;
+            z-index: 100;
         }
         
         .falling-object {
@@ -64,20 +65,22 @@
         }
         
         #interactPrompt {
-            position: absolute;
+            position: fixed;
             font-size: 14px;
             color: #ffff00;
             display: none;
             pointer-events: none;
+            z-index: 200;
         }
         
         #redButton {
-            position: absolute;
+            position: fixed;
             width: 40px;
             height: 60px;
             background-color: #ff0000;
             border: 2px solid #990000;
             display: none;
+            z-index: 150;
         }
         
         button {
@@ -100,8 +103,8 @@
     <div id="gameContainer">
         <div id="player"></div>
         <div id="redButton"></div>
-        <div id="interactPrompt">Press SPACE to interact</div>
     </div>
+    <div id="interactPrompt">Press SPACE to interact</div>
     <div id="score">Score: 0</div>
     <div id="gameOver">GAME OVER</div>
     <button onclick="window.location.href='reviews.html'">Back to Reviews</button>
@@ -126,6 +129,8 @@
         const playerHeight = 60;
         const containerWidth = 600;
         const containerHeight = 800;
+        const containerLeft = 20;
+        const containerTop = 20;
         
         // Smooth player movement
         const keys = {};
@@ -155,36 +160,18 @@
                 player.style.left = playerX + 'px';
                 player.style.bottom = playerY + 'px';
             } else if (inEndingSequence) {
-                // Move right during ending sequence
-                if (keys['ArrowRight'] && playerX < containerWidth + 200) {
+                // Move right during ending sequence - no bounds
+                if (keys['ArrowRight']) {
                     playerX += 8;
-                    player.style.left = playerX + 'px';
-                }
-                
-                // Check if off screen right
-                if (playerX > containerWidth) {
-                    transitionToButtonScene();
-                }
-                
-                // Check distance to button for interaction
-                const buttonCenterX = redButton.offsetLeft + 20;
-                const buttonCenterY = containerHeight - 110;
-                const playerCenterX = playerX + playerWidth / 2;
-                const playerCenterY = playerY + playerHeight / 2;
-                
-                const distance = Math.sqrt(
-                    Math.pow(playerCenterX - buttonCenterX, 2) + 
-                    Math.pow(playerCenterY - buttonCenterY, 2)
-                );
-                
-                if (distance < 60) {
-                    canInteract = true;
-                    interactPrompt.style.display = 'block';
-                    interactPrompt.style.left = (buttonCenterX - 40) + 'px';
-                    interactPrompt.style.top = (buttonCenterY - 40) + 'px';
-                } else {
-                    canInteract = false;
-                    interactPrompt.style.display = 'none';
+                    const pageX = containerLeft + playerX;
+                    player.style.position = 'fixed';
+                    player.style.left = pageX + 'px';
+                    player.style.bottom = containerTop + 'px';
+                    
+                    // Check if reached edge of screen
+                    if (pageX > window.innerWidth) {
+                        transitionToButtonScene();
+                    }
                 }
             }
         }, 30);
@@ -231,12 +218,34 @@
         }
         
         function transitionToButtonScene() {
-            // Pan camera and show button
-            player.style.left = '-50px';
+            // Show button at new camera angle
             redButton.style.display = 'block';
-            redButton.style.left = '400px';
-            redButton.style.bottom = '100px';
-            gameContainer.style.backgroundColor = '#0a0a0a';
+            redButton.style.left = (window.innerWidth - 100) + 'px';
+            redButton.style.top = '300px';
+            
+            // Check distance to button for interaction
+            const buttonCenterX = window.innerWidth - 80;
+            const buttonCenterY = 330;
+            const playerCenterX = parseInt(player.style.left) + playerWidth / 2;
+            const playerCenterY = containerTop + 30;
+            
+            const interactionCheckInterval = setInterval(() => {
+                const currentPlayerX = parseInt(player.style.left);
+                const distance = Math.sqrt(
+                    Math.pow(currentPlayerX + playerWidth / 2 - buttonCenterX, 2) + 
+                    Math.pow(50, 2)
+                );
+                
+                if (distance < 100) {
+                    canInteract = true;
+                    interactPrompt.style.display = 'block';
+                    interactPrompt.style.left = (buttonCenterX - 40) + 'px';
+                    interactPrompt.style.top = (buttonCenterY - 60) + 'px';
+                } else {
+                    canInteract = false;
+                    interactPrompt.style.display = 'none';
+                }
+            }, 30);
         }
         
         function playSound() {
