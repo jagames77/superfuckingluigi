@@ -62,6 +62,12 @@
             color: black;
             margin: 0;
         }
+        
+        a {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -80,7 +86,7 @@
             document.body.innerHTML += `
                 <div class="review">
                     <div class="review-author">- Mary</div>
-                    <div class="review-text">Have you seen my brother? I miss Tobias... Where have you gone, this website is the last thing you were on please come home soon</div>
+                    <div class="review-text">Have you seen my brother? I miss <a href="minigame.html">Tobias</a>... Where have you gone, this website is the last thing you were on please come home soon</div>
                 </div>
             `;
         } else {
