@@ -3,91 +3,1281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>superfuckingluigi</title>
+    <title>superfuckingluigi - PEAK EDITION</title>
     <style>
+        /* ==========================================================================
+           GLOBAL & RETRO COMPONENT STYLES 
+           ========================================================================== */
         body {
+            font-family: sans-serif;
+            background-color: white;
+            color: black;
             margin: 0;
             padding: 0;
-            background-color: white;
-            overflow-x: hidden;
-            height: 100vh;
-        }
-        
-        h1 {
-            color: black;
-            margin: 0;
-            padding: 20px;
-        }
-        
-        .nav-buttons {
-            padding: 0 20px;
-            margin-bottom: 15px;
-        }
-        
-        button {
-            background-color: #c0c0c0;
-            color: black;
-            border: 2px outset #dfdfdf;
-            padding: 4px 12px;
-            cursor: pointer;
-            font-size: 12px;
-            font-family: Arial, sans-serif;
-            margin-right: 5px;
-        }
-        
-        button:active {
-            border-style: inset;
-        }
-        
-        .tagline {
-            padding: 0 20px;
-            color: black;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        
-        .slide-container {
             overflow: hidden;
-            position: fixed;
-            bottom: -150px;
-            left: 0;
-            width: 100%;
-            height: 900px;
+            min-height: 100vh;
+            user-select: none;
         }
-        
-        .sliding-image {
-            height: 100%;
-            animation: slide 50s linear infinite;
+
+        #siteBrandHeader {
+            padding: 20px 20px 0 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        #navBarContainer {
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .retro-btn {
             display: inline-block;
+            padding: 6px 14px;
+            background-color: #e0e0e0;
+            border: 2px outset #ffffff;
+            box-shadow: 1px 1px 0px #000000;
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .retro-btn:active {
+            border: 2px inset #ffffff;
+            box-shadow: none;
+            padding: 7px 13px 5px 15px;
+        }
+
+        .view-panel {
+            display: none;
+            box-sizing: border-box;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .view-panel.active-view {
+            display: block;
+        }
+
+        /* ==========================================================================
+           HOME PAGE
+           ========================================================================== */
+        .sliding-container {
+            position: fixed;
+            bottom: -300px;
+            width: 100vw;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .sliding-image {
+            position: relative;
+            white-space: nowrap;
+            animation: slideLuigi 50s linear infinite;
+        }
+        .sliding-image img { height: 900px; }
+
+        @keyframes slideLuigi {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-900px); }
+        }
+
+        /* ==========================================================================
+           DEALS & COUPON
+           ========================================================================== */
+        .coupon-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px dashed #000;
+            max-width: 400px;
+            background: #fafafa;
+        }
+
+        .coupon-input {
+            padding: 6px;
+            font-size: 14px;
+            border: 2px inset #ffffff;
+            box-shadow: 1px 1px 0px #000000;
+            width: 60%;
+            margin-right: 10px;
+        }
+
+        /* ==========================================================================
+           REVIEWS & MARY
+           ========================================================================== */
+        .mary-gateway {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #333333;
+            display: none; 
+            border-left: 3px solid #ff4444;
+            padding-left: 15px;
+            max-width: 600px;
         }
         
-        .sliding-image img {
-            height: 100%;
-            object-fit: contain;
+        .secret-link {
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ==========================================================================
+           MINIGAME & THE VOID 
+           ========================================================================== */
+        #minigameView { 
+            background-color: #1a1a1a; 
+            color: #cccccc; 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh;
+            position: relative;
+        }
+        #minigameView.active-view { display: flex; }
+        
+        #arcadeUi { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 20; 
         }
         
-        @keyframes slide {
+        #gameContainer { 
+            position: relative; 
+            width: 600px; 
+            height: 600px; 
+            background-color: #0d0d0d; 
+            border: 3px solid #333333; 
+            overflow: hidden;
+        }
+        
+        #player { 
+            position: absolute; 
+            width: 50px; 
+            height: 60px; 
+            background-color: #333333; 
+            border: 2px solid #666666; 
+            z-index: 260; 
+            box-sizing: border-box; 
+        }
+        
+        /* High Fidelity Animated Stickman Upgrade */
+        #player.orange-guy-sprite {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 75"><circle cx="16" cy="14" r="10" fill="%23e69500"/><line x1="16" y1="24" x2="16" y2="50" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="30" x2="4" y2="45" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="30" x2="28" y2="45" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="50" x2="8" y2="72" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="50" x2="24" y2="72" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/></svg>') !important;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-color: transparent !important;
+            border: none !important;
+            width: 32px;
+            height: 75px;
+            border-radius: 0;
+        }
+
+        #player.orange-guy-sprite.walking {
+            animation: stickmanWalk 0.25s steps(2) infinite;
+        }
+
+        @keyframes stickmanWalk {
             0% {
-                transform: translateX(100vw);
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 75"><circle cx="16" cy="14" r="10" fill="%23e69500"/><line x1="16" y1="24" x2="16" y2="50" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="30" x2="6" y2="42" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="30" x2="26" y2="48" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="50" x2="2" y2="70" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="50" x2="20" y2="72" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/></svg>');
             }
             100% {
-                transform: translateX(-900px);
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 75"><circle cx="16" cy="14" r="10" fill="%23e69500"/><line x1="16" y1="24" x2="16" y2="50" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="30" x2="26" y2="42" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="30" x2="6" y2="48" stroke="%23e69500" stroke-width="4" stroke-linecap="round"/><line x1="16" y1="50" x2="30" y2="70" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/><line x1="16" y1="50" x2="12" y2="72" stroke="%23e69500" stroke-width="5" stroke-linecap="round"/></svg>');
             }
+        }
+
+        .falling-object { 
+            position: absolute; 
+            width: 30px; 
+            height: 30px; 
+            background-color: #444444; 
+            border: 2px solid #666666; 
+        }
+        
+        .arcade-meta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 600px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        #scoreCounter { font-size: 24px; margin: 5px 0; }
+        #gameOverBanner { font-size: 28px; color: #ff4444; margin: 5px 0; display: none; font-weight: bold; }
+        
+        #darkRoomCanvas { 
+            display: none; 
+            position: absolute; 
+            top: 0; left: 0; width: 100vw; height: 100vh; 
+            background-color: #050505; 
+            z-index: 50; 
+        }
+        
+        #redSecretButton { 
+            position: absolute; right: 15%; bottom: 10%; width: 50px; height: 50px; 
+            background-color: #ff0000; border: 4px solid #800000; border-radius: 4px; 
+        }
+
+        #secretDoor {
+            position: absolute; left: 50%; bottom: 20%; width: 85px; height: 130px;
+            background-color: #1a0f00; border: 4px ridge #ffaa00; box-shadow: 0px 0px 15px #ffaa00;
+            display: none; z-index: 45;
+        }
+        
+        #interactPrompt { 
+            position: absolute; color: #ffff00; font-size: 16px; font-weight: bold; 
+            display: none; z-index: 1000; text-shadow: 2px 2px #000; text-align: center; white-space: nowrap;
+        }
+
+        /* ==========================================================================
+           EXPLORATION ENGINE MAPS (MIDNIGHT MOTORIST FORMAT)
+           ========================================================================== */
+        #fnafSecretView {
+            display: none;
+            background-color: #030a03; 
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        .crt-scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 4px;
+            z-index: 290;
+            pointer-events: none;
+        }
+
+        #rainCanvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 280;
+            pointer-events: none;
+        }
+
+        /* Screen Sub-Containers */
+        .fnaf-screen-section {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .fnaf-screen-section.visible-section {
+            display: block;
+        }
+
+        /* Environment and Railings */
+        .dirt-road {
+            position: absolute;
+            background-color: #2b231d;
+            z-index: 201;
+        }
+
+        .railing-left, .railing-right, .railing-top, .railing-bottom {
+            position: absolute;
+            background: repeating-linear-gradient(90deg, #1f140e, #1f140e 4px, #120b08 4px, #120b08 8px);
+            z-index: 205;
+        }
+        
+        .forest-mass {
+            position: absolute;
+            background-color: #020702;
+            border: 4px dashed #051405;
+            z-index: 200;
+        }
+
+        .house-structure {
+            position: absolute;
+            top: 5%; left: 35%; width: 30%; height: 35%;
+            background-color: #10183a;
+            border: 6px solid #4d588a;
+            z-index: 202;
+        }
+
+        .broken-window-frame {
+            position: absolute;
+            bottom: 10%; left: 15%; width: 60px; height: 55px;
+            background: #222; border: 3px solid #666;
+        }
+
+        .shattered-hole {
+            position: absolute;
+            bottom: 5%; left: 60%; width: 80px; height: 65px;
+            background-color: #000;
+            clip-path: polygon(20% 0%, 80% 15%, 100% 60%, 50% 100%, 0% 50%);
+            border: 2px dashed #ff0000;
+        }
+
+        .blood-stain {
+            position: absolute;
+            width: 55px; height: 30px;
+            background-color: #4a0202;
+            box-shadow: 8px 6px 0 #2d0101, -6px 4px 0 #5c0303;
+            z-index: 202;
+            border-radius: 50%;
+        }
+
+        #bulletinBoard {
+            position: absolute;
+            top: 40%; left: 47%; width: 90px; height: 75px;
+            background-color: #422817;
+            border: 5px solid #24140a;
+            cursor: pointer;
+            z-index: 203;
+        }
+        #bulletinBoard::after {
+            content: '📄';
+            font-size: 24px;
+            position: absolute;
+            top: 20%; left: 35%;
+        }
+
+        .footprint-egg {
+            position: absolute;
+            width: 14px; height: 22px;
+            background-color: #000;
+            opacity: 0.6;
+            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 50% 100%, 0% 50%);
+            z-index: 202;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           CLOSE UP INTERACTIVE OVERLAY PANEL & GLITCH CONFIGS
+           ========================================================================== */
+        #closeupOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #020202;
+            z-index: 300;
+            color: #eee;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .newspaper-frame {
+            width: 40%; height: 85%;
+            background-color: #d9cbab;
+            color: #111; padding: 30px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            font-family: 'Courier New', Courier, monospace;
+            border: 4px solid #333;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .newspaper-header {
+            text-align: center; font-size: 26px; font-weight: bold;
+            border-bottom: 5px double #111; padding-bottom: 10px; margin-bottom: 15px;
+        }
+
+        .newspaper-body { font-size: 14px; line-height: 1.5; text-align: justify; }
+
+        .hidden-trigger-text {
+            cursor: pointer;
+            color: inherit;
+        }
+        .hidden-trigger-text:hover {
+            color: #800000;
+            background-color: #000;
+        }
+
+        .face-container {
+            position: relative;
+            width: 380px; height: 440px;
+            background-color: #080808;
+            border: 6px ridge #444;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .pixel-distorted-face {
+            width: 280px;
+            height: 380px;
+            object-fit: cover;
+            border: 3px solid #222;
+            transition: transform 0.1s, filter 0.1s;
+        }
+
+        #closePromptText {
+            position: absolute; bottom: 3%; color: #555; font-size: 13px; font-weight: bold;
+        }
+
+        /* Image Corruptor Active Glitch Loop */
+        .glitch-active .pixel-distorted-face {
+            filter: invert(1) sepia(1) saturate(25) hue-rotate(300deg) !important;
+            animation: buildUpVibe 0.05s infinite !important;
+        }
+
+        @keyframes buildUpVibe {
+            0% { transform: scale(1.1) translate(2px, 2px) skewX(-5deg); }
+            50% { transform: scale(1.15) translate(-2px, -2px) skewX(5deg); }
+            100% { transform: scale(1.1) translate(2px, -2px) skewX(0deg); }
+        }
+
+        #screamerOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 1000;
+            justify-content: center; 
+            align-items: center;
+        }
+        
+        .screamer-face {
+            width: auto;
+            height: auto;
+            max-width: 100vw;
+            max-height: 100vh;
+            object-fit: contain;
+            animation: intenseShake 0.04s infinite;
+        }
+
+        @keyframes intenseShake {
+            0% { transform: translate(6px, 6px) scale(1.1); }
+            25% { transform: translate(-6px, -4px) scale(1.15); }
+            50% { transform: translate(4px, -6px) scale(1.08); }
+            75% { transform: translate(-4px, 4px) scale(1.12); }
+            100% { transform: translate(6px, -2px) scale(1.1); }
         }
     </style>
 </head>
 <body>
-    <h1>superfuckingluigi</h1>
-    <div class="nav-buttons">
-        <button onclick="window.location.href='index.html'">home</button>
-        <button onclick="window.location.href='reviews.html'">reviews</button>
-        <button onclick="window.location.href='deals.html'">deals</button>
+
+    <div id="siteBrandHeader">superfuckingluigi</div>
+
+    <div id="navBarContainer">
+        <div class="retro-btn" onclick="navigateTo('home')">Home</div>
+        <div class="retro-btn" onclick="navigateTo('reviews')">Customer Reviews</div>
+        <div class="retro-btn" onclick="navigateTo('deals')">Deals</div>
     </div>
-    <div class="tagline">Hello have you ever wanted superfuckingluigi?</div>
-    <div class="slide-container">
-        <div class="sliding-image">
-            <img src="image_2026-06-03_005607934.png" alt="Luigi">
+
+    <div id="homeView" class="view-panel active-view">
+        <div class="sliding-container">
+            <div class="sliding-image">
+                <img src="luigi.png" alt="Sliding Luigi">
+            </div>
         </div>
     </div>
+
+    <div id="dealsView" class="view-panel">
+        <h2>Exclusive Offers</h2>
+        <div class="coupon-box">
+            <p style="margin-top: 0; font-weight: bold;">Enter Coupon Code:</p>
+            <input type="text" id="couponField" class="coupon-input" placeholder="CODE...">
+            <div class="retro-btn" onclick="validateCouponCode()">Apply</div>
+            <div id="couponFeedback" style="margin-top:10px;"></div>
+        </div>
+    </div>
+
+    <div id="reviewsView" class="view-panel">
+        <h2>Reviews</h2>
+        <p>"This website is absolutely incredible. 10/10!" - A Satisfied Customer</p>
+        <div id="maryContainer" class="mary-gateway">
+            <p>"Have you seen my brother? I miss <span class="secret-link" onclick="navigateTo('minigame')">Tobias</span>... Where have you gone?" - Mary</p>
+        </div>
+    </div>
+
+    <div id="minigameView" class="view-panel">
+        <div id="arcadeUi">
+            <h2>Catch The Falling Objects...</h2>
+            <div id="gameContainer">
+                <div id="player"></div>
+            </div>
+            <div class="arcade-meta-container">
+                <div id="scoreCounter">Score: 0</div>
+                <div id="gameOverBanner">GAME OVER</div>
+                <div class="retro-btn" onclick="navigateTo('home')" style="margin-top: 10px;">Exit Arcade</div>
+            </div>
+        </div>
+
+        <div id="darkRoomCanvas">
+            <div id="redSecretButton"></div>
+            <div id="secretDoor"></div>
+            <div id="interactPrompt">Press SPACE to interact</div>
+        </div>
+    </div>
+
+    <div id="fnafSecretView">
+        <div class="crt-scanlines"></div>
+        <canvas id="rainCanvas"></canvas>
+
+        <div id="sec_house" class="fnaf-screen-section">
+            <div class="house-structure">
+                <div class="broken-window-frame" style="cursor: pointer;" onclick="attemptEnterHouse()"></div>
+                <div class="shattered-hole" style="cursor: pointer;" onclick="attemptEnterHouse()"></div>
+            </div>
+            <div class="footprint-egg" style="top: 45%; left: 58%;" onclick="triggerCreepyTrack('footprint')"></div>
+            <div class="dirt-road" style="top: 40%; left: 44%; width: 12%; height: 60%;"></div>
+            <div class="railing-left" style="top: 40%; left: 43%; width: 1%; height: 60%;"></div>
+            <div class="railing-right" style="top: 40%; left: 56%; width: 1%; height: 60%;"></div>
+            <div class="forest-mass" style="top: 40%; left: 0%; width: 43%; height: 60%;"></div>
+            <div class="forest-mass" style="top: 40%; left: 57%; width: 43%; height: 60%;"></div>
+        </div>
+
+        <div id="sec_fork" class="fnaf-screen-section">
+            <div class="dirt-road" style="top: 0%; left: 44%; width: 12%; height: 100%;"></div>
+            <div class="dirt-road" style="top: 40%; left: 0%; width: 100%; height: 20%;"></div>
+            
+            <div class="railing-left" style="top: 0%; left: 43%; width: 1%; height: 40%;"></div>
+            <div class="railing-right" style="top: 0%; left: 56%; width: 1%; height: 40%;"></div>
+            <div class="railing-left" style="top: 60%; left: 43%; width: 1%; height: 40%;"></div>
+            <div class="railing-right" style="top: 60%; left: 56%; width: 1%; height: 40%;"></div>
+            <div class="railing-top" style="top: 39%; left: 0%; width: 44%; height: 1%;"></div>
+            <div class="railing-bottom" style="top: 60%; left: 0%; width: 44%; height: 1%;"></div>
+            <div class="railing-top" style="top: 39%; left: 56%; width: 44%; height: 1%;"></div>
+            <div class="railing-bottom" style="top: 60%; left: 56%; width: 44%; height: 1%;"></div>
+
+            <div class="forest-mass" style="top: 0%; left: 0%; width: 43%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 0%; left: 57%; width: 43%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 61%; left: 0%; width: 43%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 61%; left: 57%; width: 43%; height: 39%;"></div>
+        </div>
+
+        <div id="sec_westEnd" class="fnaf-screen-section">
+            <div class="dirt-road" style="top: 40%; left: 20%; width: 80%; height: 20%;"></div>
+            <div class="railing-top" style="top: 39%; left: 20%; width: 80%; height: 1%;"></div>
+            <div class="railing-bottom" style="top: 60%; left: 20%; width: 80%; height: 1%;"></div>
+            <div class="railing-left" style="top: 39%; left: 19%; width: 1%; height: 22%;"></div>
+            <div class="blood-stain" style="top: 45%; left: 25%; cursor: pointer;" onclick="inspectBlood()"></div>
+            <div class="forest-mass" style="top: 0%; left: 0%; width: 100%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 61%; left: 0%; width: 100%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 39%; left: 0%; width: 19%; height: 22%;"></div>
+        </div>
+
+        <div id="sec_eastEnd" class="fnaf-screen-section">
+            <div class="dirt-road" style="top: 40%; left: 0%; width: 80%; height: 20%;"></div>
+            <div class="railing-top" style="top: 39%; left: 0%; width: 80%; height: 1%;"></div>
+            <div class="railing-bottom" style="top: 60%; left: 0%; width: 80%; height: 20%;"></div>
+            <div class="railing-right" style="top: 39%; left: 80%; width: 1%; height: 22%;"></div>
+            <div class="blood-stain" style="top: 45%; left: 70%; cursor: pointer;" onclick="inspectBlood()"></div>
+            <div class="forest-mass" style="top: 0%; left: 0%; width: 100%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 61%; left: 0%; width: 100%; height: 39%;"></div>
+            <div class="forest-mass" style="top: 39%; left: 81%; width: 19%; height: 22%;"></div>
+        </div>
+
+        <div id="sec_clearing" class="fnaf-screen-section">
+            <div class="dirt-road" style="top: 0%; left: 44%; width: 12%; height: 50%;"></div>
+            <div class="railing-left" style="top: 0%; left: 43%; width: 1%; height: 50%;"></div>
+            <div class="railing-right" style="top: 0%; left: 56%; width: 1%; height: 50%;"></div>
+            <div class="railing-bottom" style="top: 50%; left: 43%; width: 14%; height: 1%;"></div>
+            
+            <div id="bulletinBoard" onclick="openBulletinCloseup()"></div>
+            
+            <div class="forest-mass" style="top: 0%; left: 0%; width: 43%; height: 100%;"></div>
+            <div class="forest-mass" style="top: 0%; left: 57%; width: 43%; height: 100%;"></div>
+            <div class="forest-mass" style="top: 51%; left: 43%; width: 14%; height: 49%;"></div>
+        </div>
+
+        <div id="sec_insideHouse" class="fnaf-screen-section" style="background-color: #120e0a;">
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 35%; background-color: #2b1f16; border-top: 5px solid #423022;"></div>
+            
+            <div id="retroRadio" onclick="toggleRadioBeep()" style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 45px; background-color: #444; border: 4px solid #1a1a1a; border-radius: 4px; cursor: pointer; z-index: 203; display: flex; flex-direction: column; justify-content: space-around; align-items: center; box-shadow: 0 0 15px rgba(0,0,0,0.6);">
+                <div style="width: 50px; height: 8px; background-color: #111; border-radius: 2px; margin-top: 4px;"></div>
+                <div style="display: flex; gap: 8px; align-items: center; width: 100%; justify-content: center;">
+                    <div id="radioIndicatorLight" style="width: 10px; height: 10px; background-color: #331111; border-radius: 50%;"></div>
+                    <div style="width: 30px; height: 12px; background-color: #222; border: 1px solid #555;"></div>
+                </div>
+            </div>
+            <div style="position: absolute; top: 40%; left: 50%; transform: translateX(-50%); color: #ffaa00; font-family: monospace; font-size: 14px; font-weight: bold; text-shadow: 2px 2px #000; text-align: center;">OLD RADIO<br><span style="font-size:10px; color:#aaa;">(Click to trigger)</span></div>
+            
+            <div onclick="exitHouseToYard()" style="position: absolute; bottom: 4%; left: 5%; width: 90px; height: 110px; background-color: #000; border: 3px solid #ffaa00; box-shadow: 0px 0px 10px #ffaa00; cursor: pointer; color: #ffaa00; display: flex; align-items: center; justify-content: center; font-size: 14px; font-family: monospace; font-weight: bold;">LEAVE</div>
+        </div>
+    </div>
+
+    <div id="closeupOverlay">
+        <div class="newspaper-frame">
+            <div class="newspaper-header">THE DAILY INQUIRER</div>
+            <div class="newspaper-body">
+                <strong>LOCAL YOUTH MISSING: SEARCH INTENSIFIES</strong>
+                <p>Authorities expanded search parameters into woodland zones following the sudden disappearance of Tobias (14). He was last seen inside his bedroom late Tuesday night.</p>
+                <p>Investigators discovered a <span class="hidden-trigger-text" onclick="triggerCreepyTrack('shatter')">shattered window panel</span> on the back side of the house. Footprint patterns lead directly into the tree line, but track hounds completely lost his scent profile near the open county highway markers.</p>
+                <p style="margin-top:20px; border-top: 1px solid #222; padding-top:10px; font-size:11px;">"He didn't run away," his sister Mary wept during an interview. "<span class="hidden-trigger-text" onclick="triggerCreepyTrack('glitchText')">Something lured him out.</span>"</p>
+            </div>
+        </div>
+
+        <div class="face-container" onclick="handleFaceInteraction(event)">
+            <img src="missing.jpg" id="visualFaceAsset" class="pixel-distorted-face" alt="Evidence Photo">
+        </div>
+        <div id="closePromptText">Click components to investigate. Press SPACE to step away.</div>
+    </div>
+
+    <div id="screamerOverlay">
+        <img src="screamer.png" class="screamer-face" alt="RUN">
+    </div>
+
+    <script>
+        const tbcScreen = document.createElement('div');
+        tbcScreen.style.position = 'fixed';
+        tbcScreen.style.top = '0';
+        tbcScreen.style.left = '0';
+        tbcScreen.style.width = '100vw';
+        tbcScreen.style.height = '100vh';
+        tbcScreen.style.backgroundColor = 'black';
+        tbcScreen.style.color = 'white';
+        tbcScreen.style.display = 'none'; 
+        tbcScreen.style.justifyContent = 'center';
+        tbcScreen.style.alignItems = 'center';
+        tbcScreen.style.fontSize = '3rem';
+        tbcScreen.style.fontFamily = '"Courier New", Courier, monospace';
+        tbcScreen.style.zIndex = '999999'; 
+        tbcScreen.innerText = 'To Be Continued...';
+        document.body.appendChild(tbcScreen);
+    </script>
+
+    <script>
+        const views = {
+            'home': document.getElementById('homeView'), 
+            'reviews': document.getElementById('reviewsView'), 
+            'deals': document.getElementById('dealsView'), 
+            'minigame': document.getElementById('minigameView')
+        };
+        const maryContainer = document.getElementById('maryContainer');
+        const siteBrandHeader = document.getElementById('siteBrandHeader');
+        const navBarContainer = document.getElementById('navBarContainer');
+
+        /* ==========================================================================
+           HARDWARE AUDIO SOUND ENGINE (PROCEDURAL AMBIENCE + FILE MAPPER CONTROLS)
+           ========================================================================== */
+        let audioCtx = null;
+        let rainSourceNode = null;
+        let droneOsc = null;
+
+        const jsAudioFile = new Audio('js.mp3');
+        let jsAudioSource = null;
+        let jsVolumeGainNode = null;
+
+        // Custom Radio Looping Engine Configuration
+        const beepAudio = new Audio('beep.wav');
+        beepAudio.loop = true;
+        let radioPlaying = false;
+        let bulletinInspected = false;
+
+        function initAudioEngine() {
+            if (audioCtx) return;
+            try {
+                const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioCtxClass();
+            } catch(e) { console.warn("Audio Context sandbox blocked."); }
+        }
+
+        function playSoundTone(freq, type, duration, vol) {
+            if (!audioCtx) return;
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playStepSound() {
+            if (!audioCtx) return;
+            playSoundTone(55, 'triangle', 0.12, 0.3);
+            setTimeout(() => playSoundTone(110, 'sine', 0.05, 0.1), 30);
+        }
+
+        function startProceduralRainSound() {
+            if (!audioCtx || rainSourceNode) return;
+            let bufferSize = 2 * audioCtx.sampleRate;
+            let noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            let output = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            let whiteNoise = audioCtx.createBufferSource();
+            whiteNoise.buffer = noiseBuffer;
+            whiteNoise.loop = true;
+
+            let filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+
+            let rainGain = audioCtx.createGain();
+            rainGain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+
+            whiteNoise.connect(filter);
+            filter.connect(rainGain);
+            rainGain.connect(audioCtx.destination);
+            whiteNoise.start();
+            rainSourceNode = whiteNoise;
+        }
+
+        function stopProceduralRainSound() {
+            if (rainSourceNode) {
+                try { rainSourceNode.stop(); } catch(e){}
+                rainSourceNode = null;
+            }
+        }
+
+        function toggleAmbienceDrone(start) {
+            if (!audioCtx) return;
+            if (start) {
+                if (droneOsc) return;
+                droneOsc = audioCtx.createOscillator();
+                let droneGain = audioCtx.createGain();
+                droneOsc.type = 'sawtooth';
+                droneOsc.frequency.setValueAtTime(32.7, audioCtx.currentTime);
+                
+                let filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(150, audioCtx.currentTime);
+
+                droneGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                droneOsc.connect(filter);
+                filter.connect(droneGain);
+                droneGain.connect(audioCtx.destination);
+                droneOsc.start();
+            } else {
+                if (droneOsc) {
+                    try { droneOsc.stop(); } catch(e){}
+                    droneOsc = null;
+                }
+            }
+        }
+
+        function playGlitchScreech() {
+            if (!audioCtx) return;
+            for(let i=0; i<5; i++) {
+                setTimeout(() => {
+                    playSoundTone(Math.random() * 800 + 200, 'square', 0.2, 0.4);
+                    playSoundTone(Math.random() * 1500 + 50, 'sawtooth', 0.15, 0.3);
+                }, i * 70);
+            }
+        }
+
+        function executeAmplifiedJumpscareAudio() {
+            if (!audioCtx) initAudioEngine();
+            if (!jsAudioSource && audioCtx) {
+                try {
+                    jsAudioSource = audioCtx.createMediaElementSource(jsAudioFile);
+                    jsVolumeGainNode = audioCtx.createGain();
+                    jsVolumeGainNode.gain.setValueAtTime(3.0, audioCtx.currentTime);
+                    jsAudioSource.connect(jsVolumeGainNode);
+                    jsVolumeGainNode.connect(audioCtx.destination);
+                } catch(e) {
+                    jsAudioFile.volume = 1.0; 
+                }
+            }
+            jsAudioFile.currentTime = 0;
+            jsAudioFile.play().catch(e => console.warn("Audio Context blocking verified."));
+        }
+
+        /* --------------------------------------------------------------------------
+           ROUTING AND DOM INTERFACE ROUTINES
+           -------------------------------------------------------------------------- */
+        function navigateTo(viewName) {
+            initAudioEngine();
+            Object.values(views).forEach(v => v.classList.remove('active-view'));
+            if (viewName === 'minigame') {
+                siteBrandHeader.style.display = 'none';
+                navBarContainer.style.display = 'none';
+            } else {
+                siteBrandHeader.style.display = 'block';
+                navBarContainer.style.display = 'flex';
+                document.body.style.backgroundColor = "white";
+                stopProceduralRainSound();
+                toggleAmbienceDrone(false);
+            }
+            
+            if (viewName === 'reviews') maryContainer.style.display = (Math.random() < 0.15) ? 'block' : 'none';
+            if (views[viewName]) views[viewName].classList.add('active-view');
+            
+            if (viewName === 'minigame') {
+                resetAndStartArcadeGame();
+            } else {
+                if (animationId) cancelAnimationFrame(animationId);
+                if (spawnerId) clearInterval(spawnerId);
+            }
+        }
+
+        /* ==========================================================================
+           VALIDATE COUPON CODE SECTION
+           ========================================================================== */
+        function validateCouponCode() {
+            const val = document.getElementById('couponField').value.trim().toUpperCase();
+            const res = document.getElementById('couponFeedback');
+            
+            if (val === 'DANIEL') {
+                tbcScreen.style.display = 'flex';
+                if (audioCtx && audioCtx.state === 'running') {
+                    audioCtx.suspend();
+                }
+                jsAudioFile.pause();
+                
+                if (animationId) cancelAnimationFrame(animationId);
+                if (spawnerId) clearInterval(spawnerId);
+                
+                document.getElementById('couponField').value = '';
+                return;
+            }
+
+            if (val === 'LUIGI2026') { 
+                res.style.color = "green"; 
+                res.textContent = "SUCCESS: 0.01% off plumbing!"; 
+            } else { 
+                res.style.color = "red"; 
+                res.textContent = "INVALID COUPON CODE"; 
+            }
+        }
+
+        /* ==========================================================================
+           ARCADE GAME AND SEAMLESS COMPARTMENT EXPLORATION ENGINE
+           ========================================================================== */
+        const gameContainer = document.getElementById('gameContainer'), 
+              playerElement = document.getElementById('player'), 
+              gameOverDisplay = document.getElementById('gameOverBanner'), 
+              arcadeUi = document.getElementById('arcadeUi'), 
+              darkRoomCanvas = document.getElementById('darkRoomCanvas'), 
+              redSecretButton = document.getElementById('redSecretButton'), 
+              secretDoor = document.getElementById('secretDoor'),
+              interactPrompt = document.getElementById('interactPrompt'), 
+              scoreDisplay = document.getElementById('scoreCounter'),
+              fnafSecretView = document.getElementById('fnafSecretView'),
+              closeupOverlay = document.getElementById('closeupOverlay'),
+              rainCanvas = document.getElementById('rainCanvas'),
+              ctxRain = rainCanvas.getContext('2d'),
+              visualFaceAsset = document.getElementById('visualFaceAsset'),
+              screamerOverlay = document.getElementById('screamerOverlay');
+
+        let score = 0, isGameOver = false, activeEnv = 'arcadeBox', animationId = null, spawnerId = null;
+        let playerX = 275, playerY = 530, doorRevealed = false, isViewingCloseup = false;
+        let fallingObjects = [];
+        let activeKeys = {};
+        let currentFnafScreen = 'sec_house';
+        let glitchClicks = 0;
+
+        window.addEventListener('keydown', (e) => {
+            activeKeys[e.code] = true;
+            if (e.code === 'Space') handleSpaceInteraction();
+        });
+        window.addEventListener('keyup', (e) => {
+            activeKeys[e.code] = false;
+        });
+
+        function resetAndStartArcadeGame() {
+            if (animationId) cancelAnimationFrame(animationId);
+            if (spawnerId) clearInterval(spawnerId);
+            fallingObjects.forEach(obj => obj.element.remove());
+            fallingObjects = [];
+            
+            score = 0;
+            isGameOver = false;
+            activeEnv = 'arcadeBox';
+            playerX = 275;
+            playerY = 530;
+            doorRevealed = false;
+            glitchClicks = 0;
+            bulletinInspected = false;
+
+            arcadeUi.style.display = 'flex';
+            darkRoomCanvas.style.display = 'none';
+            fnafSecretView.style.display = 'none';
+            closeupOverlay.style.display = 'none';
+            screamerOverlay.style.display = 'none';
+            secretDoor.style.display = 'none';
+            interactPrompt.style.display = 'none';
+            gameOverDisplay.style.display = 'none';
+            scoreDisplay.textContent = "Score: " + score;
+
+            playerElement.className = '';
+            playerElement.style.width = '50px';
+            playerElement.style.height = '60px';
+            gameContainer.appendChild(playerElement);
+
+            updatePlayerDomPosition();
+            spawnerId = setInterval(spawnFallingObject, 1000);
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function spawnFallingObject() {
+            if (isGameOver || activeEnv !== 'arcadeBox') return;
+            const objEl = document.createElement('div');
+            objEl.className = 'falling-object';
+            objEl.style.left = Math.floor(Math.random() * 570) + 'px';
+            objEl.style.top = '0px';
+            gameContainer.appendChild(objEl);
+            fallingObjects.push({ element: objEl, y: 0 });
+        }
+
+        function gameLoop() {
+            if (activeEnv === 'arcadeBox') {
+                
+                if (activeKeys['ArrowLeft'] || activeKeys['KeyA']) {
+                    if (isGameOver || playerX > 0) playerX -= 6;
+                }
+                if (activeKeys['ArrowRight'] || activeKeys['KeyD']) {
+                    if (isGameOver || playerX < 550) playerX += 6;
+                }
+                
+                if (isGameOver) {
+                    if (activeKeys['ArrowUp'] || activeKeys['KeyW']) playerY -= 6;
+                    if (activeKeys['ArrowDown'] || activeKeys['KeyS']) playerY += 6;
+                }
+
+                updatePlayerDomPosition();
+
+                if (isGameOver && playerElement.getBoundingClientRect().left > window.innerWidth) {
+                    triggerDarkRoomTransition();
+                    // BUG FIX: Removed 'return;' here to prevent the requestAnimationFrame from breaking.
+                } else {
+                    for (let i = fallingObjects.length - 1; i >= 0; i--) {
+                        let obj = fallingObjects[i];
+                        obj.y += 4;
+                        obj.element.style.top = obj.y + 'px';
+
+                        let objX = parseFloat(obj.element.style.left);
+                        if (obj.y >= 500 && obj.y <= 560 && objX >= playerX - 25 && objX <= playerX + 45) {
+                            score++;
+                            scoreDisplay.textContent = "Score: " + score;
+                            playSoundTone(440, 'sine', 0.08, 0.2);
+                            obj.element.remove();
+                            fallingObjects.splice(i, 1);
+                            continue;
+                        }
+
+                        if (obj.y > 600) {
+                            obj.element.remove();
+                            fallingObjects.splice(i, 1);
+                            
+                            if (!isGameOver) {
+                                isGameOver = true;
+                                clearInterval(spawnerId);
+                                gameOverDisplay.style.display = 'block';
+                                playSoundTone(120, 'sawtooth', 0.4, 0.3);
+                            }
+                        }
+                    }
+                }
+                
+            } else if (activeEnv === 'darkRoom') {
+                
+                if (activeKeys['ArrowLeft'] || activeKeys['KeyA']) playerX -= 5;
+                if (activeKeys['ArrowRight'] || activeKeys['KeyD']) playerX += 5;
+                if (activeKeys['ArrowUp'] || activeKeys['KeyW']) playerY -= 5;
+                if (activeKeys['ArrowDown'] || activeKeys['KeyS']) playerY += 5;
+                
+                updatePlayerDomPosition();
+                checkDarkRoomInteractions();
+
+            } else if (activeEnv === 'fnafSecret') {
+                
+                let moved = false;
+                let nextX = playerX;
+                let nextY = playerY;
+
+                if (activeKeys['ArrowLeft'] || activeKeys['KeyA']) { nextX -= 5; moved = true; }
+                if (activeKeys['ArrowRight'] || activeKeys['KeyD']) { nextX += 5; moved = true; }
+                if (activeKeys['ArrowUp'] || activeKeys['KeyW']) { nextY -= 5; moved = true; }
+                if (activeKeys['ArrowDown'] || activeKeys['KeyS']) { nextY += 5; moved = true; }
+                
+                if (moved) {
+                    let prevX = playerX;
+                    let prevY = playerY;
+                    playerX = nextX;
+                    playerY = nextY;
+                    updatePlayerDomPosition();
+                    
+                    if (checkObstacleCollision()) {
+                        playerX = prevX;
+                        playerY = prevY;
+                        updatePlayerDomPosition();
+                    } else {
+                        if (Math.random() < 0.15) playStepSound();
+                        playerElement.classList.add('walking');
+                    }
+                } else {
+                    playerElement.classList.remove('walking');
+                }
+
+                checkFnafScreenTransitions();
+            }
+
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function updatePlayerDomPosition() {
+            playerElement.style.left = playerX + 'px';
+            playerElement.style.top = playerY + 'px';
+        }
+
+        /* ==========================================================================
+           COLLISION DETECTION SYSTEM (FOR PATHWAY BOUNDS)
+           ========================================================================== */
+        function checkObstacleCollision() {
+            const pRect = playerElement.getBoundingClientRect();
+            const activeScreen = document.getElementById(currentFnafScreen);
+            if (!activeScreen) return false;
+            
+            const obstacles = activeScreen.querySelectorAll('.forest-mass, .railing-left, .railing-right, .railing-top, .railing-bottom, .house-structure');
+            for (let obs of obstacles) {
+                const oRect = obs.getBoundingClientRect();
+                if (pRect.left < oRect.right &&
+                    pRect.right > oRect.left &&
+                    pRect.top < oRect.bottom &&
+                    pRect.bottom > oRect.top) {
+                    return true; 
+                }
+            }
+            return false;
+        }
+
+        /* ==========================================================================
+           SECRET EXPLORATION GLITCH MECHANICS & ROUTERS
+           ========================================================================== */
+        function triggerDarkRoomTransition() {
+            clearInterval(spawnerId);
+            fallingObjects.forEach(obj => obj.element.remove());
+            fallingObjects = [];
+            
+            activeEnv = 'darkRoom';
+            playGlitchScreech();
+            
+            arcadeUi.style.display = 'none';
+            darkRoomCanvas.style.display = 'block';
+            document.body.style.backgroundColor = "#050505";
+            
+            playerX = 20;
+            playerY = window.innerHeight - 150;
+            darkRoomCanvas.appendChild(playerElement);
+            updatePlayerDomPosition();
+        }
+
+        function checkDarkRoomInteractions() {
+            let overButton = (playerX > window.innerWidth * 0.8 && playerY > window.innerHeight * 0.8);
+            let overDoor = (doorRevealed && Math.abs(playerX - window.innerWidth/2) < 60 && playerY > window.innerHeight * 0.7);
+
+            if (overButton || overDoor) {
+                interactPrompt.style.display = 'block';
+                interactPrompt.style.left = (playerX - 40) + 'px';
+                interactPrompt.style.top = (playerY - 30) + 'px';
+            } else {
+                interactPrompt.style.display = 'none';
+            }
+        }
+
+        function handleSpaceInteraction() {
+            if (activeEnv === 'darkRoom') {
+                let overButton = (playerX > window.innerWidth * 0.8 && playerY > window.innerHeight * 0.8);
+                let overDoor = (doorRevealed && Math.abs(playerX - window.innerWidth/2) < 60 && playerY > window.innerHeight * 0.7);
+
+                if (overButton && !doorRevealed) {
+                    doorRevealed = true;
+                    secretDoor.style.display = 'block';
+                    playSoundTone(120, 'sawtooth', 0.5, 0.4);
+                } else if (overDoor) {
+                    startFnafSecretEngine();
+                }
+            } else if (activeEnv === 'fnafSecret' && isViewingCloseup) {
+                isViewingCloseup = false;
+                closeupOverlay.style.display = 'none';
+            }
+        }
+
+        function startFnafSecretEngine() {
+            activeEnv = 'fnafSecret';
+            darkRoomCanvas.style.display = 'none';
+            fnafSecretView.style.display = 'block';
+            
+            playerElement.className = 'orange-guy-sprite';
+            fnafSecretView.appendChild(playerElement);
+            
+            playerX = window.innerWidth / 2;
+            playerY = window.innerHeight - 120;
+            updatePlayerDomPosition();
+
+            resizeRainCanvas();
+            window.addEventListener('resize', resizeRainCanvas);
+            startProceduralRainSound();
+            toggleAmbienceDrone(true);
+            setActiveFnafScreen('sec_house');
+            loopRainAnimation();
+        }
+
+        function resizeRainCanvas() {
+            rainCanvas.width = window.innerWidth;
+            rainCanvas.height = window.innerHeight;
+        }
+
+        function loopRainAnimation() {
+            if (activeEnv !== 'fnafSecret') return;
+            ctxRain.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+            ctxRain.strokeStyle = 'rgba(100, 130, 170, 0.4)';
+            ctxRain.lineWidth = 1.5;
+            for (let i = 0; i < 40; i++) {
+                let rx = Math.random() * rainCanvas.width;
+                let ry = Math.random() * rainCanvas.height;
+                ctxRain.beginPath();
+                ctxRain.moveTo(rx, ry);
+                ctxRain.lineTo(rx - 4, ry + 18);
+                ctxRain.stroke();
+            }
+            requestAnimationFrame(loopRainAnimation);
+        }
+
+        function setActiveFnafScreen(screenId) {
+            currentFnafScreen = screenId;
+            document.querySelectorAll('.fnaf-screen-section').forEach(sec => {
+                sec.classList.remove('visible-section');
+            });
+            document.getElementById(screenId).classList.add('visible-section');
+        }
+
+        function checkFnafScreenTransitions() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            if (currentFnafScreen === 'sec_house') {
+                if (playerY > h) {
+                    setActiveFnafScreen('sec_fork');
+                    playerY = 10;
+                }
+            } else if (currentFnafScreen === 'sec_fork') {
+                if (playerY < 0) {
+                    setActiveFnafScreen('sec_house');
+                    playerY = h - 120;
+                } else if (playerX < 0) {
+                    setActiveFnafScreen('sec_westEnd');
+                    playerX = w - 60;
+                } else if (playerX > w) {
+                    setActiveFnafScreen('sec_eastEnd');
+                    playerX = 10;
+                } else if (playerY > h) {
+                    setActiveFnafScreen('sec_clearing');
+                    playerY = 10;
+                }
+            } else if (currentFnafScreen === 'sec_westEnd') {
+                if (playerX > w) {
+                    setActiveFnafScreen('sec_fork');
+                    playerX = 10;
+                }
+            } else if (currentFnafScreen === 'sec_eastEnd') {
+                if (playerX < 0) {
+                    setActiveFnafScreen('sec_fork');
+                    playerX = w - 60;
+                }
+            } else if (currentFnafScreen === 'sec_clearing') {
+                if (playerY < 0) {
+                    setActiveFnafScreen('sec_fork');
+                    playerY = h - 120;
+                }
+            } else if (currentFnafScreen === 'sec_insideHouse') {
+                if (playerY > h) {
+                    exitHouseToYard();
+                }
+            }
+        }
+
+        /* ==========================================================================
+           INTERACTIVE INVESTIGATION ROUTINES
+           ========================================================================== */
+        function inspectBlood() {
+            playSoundTone(70, 'sawtooth', 0.5, 0.45);
+            alert("A deep, thick blood stain cuts across the dirt path... Something violent occurred right here.");
+        }
+
+        function openBulletinCloseup() {
+            isViewingCloseup = true;
+            bulletinInspected = true; 
+            closeupOverlay.style.display = 'flex';
+        }
+
+        function attemptEnterHouse() {
+            if (!bulletinInspected) {
+                alert("The window frame is completely shattered, but it's dark inside. I should examine the surroundings and inspect that bulletin board first.");
+                return;
+            }
+            setActiveFnafScreen('sec_insideHouse');
+            playerX = window.innerWidth / 2;
+            playerY = window.innerHeight - 150;
+            updatePlayerDomPosition();
+            playSoundTone(160, 'sine', 0.25, 0.4);
+        }
+
+        function exitHouseToYard() {
+            setActiveFnafScreen('sec_house');
+            playerX = window.innerWidth * 0.5;
+            playerY = window.innerHeight * 0.45; 
+            updatePlayerDomPosition();
+        }
+
+        function toggleRadioBeep() {
+            const light = document.getElementById('radioIndicatorLight');
+            if (!radioPlaying) {
+                beepAudio.play().catch(e => console.warn("Beep source context restriction: ", e));
+                radioPlaying = true;
+                light.style.backgroundColor = '#ff2222';
+                light.style.boxShadow = '0 0 8px #ff2222';
+                alert("The old radio crackles on, playing an ominous electronic beep on loop.");
+            } else {
+                beepAudio.pause();
+                radioPlaying = false;
+                light.style.backgroundColor = '#331111';
+                light.style.boxShadow = 'none';
+                alert("Radio deactivated.");
+            }
+        }
+
+        function triggerCreepyTrack(type) {
+            if (type === 'footprint') {
+                playSoundTone(60, 'sawtooth', 0.8, 0.5);
+                alert("Three-toed creature footprints lead deep into the woods... they match Tobias's stride length.");
+            } else if (type === 'shatter') {
+                playSoundTone(800, 'square', 0.05, 0.3);
+                playSoundTone(150, 'triangle', 0.4, 0.6);
+            } else if (type === 'glitchText') {
+                playGlitchScreech();
+            }
+        }
+
+        /* ==========================================================================
+           JUMPSCARE LOGIC (NON-DESTRUCTIVE MODIFICATION)
+           ========================================================================== */
+        function handleFaceInteraction(event) {
+            glitchClicks++;
+            playGlitchScreech();
+            
+            closeupOverlay.classList.add('glitch-active');
+            visualFaceAsset.style.transform = `scale(${1 + (glitchClicks * 0.15)})`;
+            
+            if (glitchClicks >= 4) {
+                executeAmplifiedJumpscareAudio();
+                screamerOverlay.style.display = 'flex';
+                
+                setTimeout(() => {
+                    screamerOverlay.style.display = 'none';
+                    closeupOverlay.style.display = 'none';
+                    isViewingCloseup = false;
+                    glitchClicks = 0;
+                    closeupOverlay.classList.remove('glitch-active');
+                    visualFaceAsset.style.transform = 'scale(1)';
+                }, 1800);
+            }
+        }
+    </script>
 </body>
 </html>
