@@ -39,6 +39,7 @@
             height: 60px;
             background-color: #333333;
             border: 2px solid #666666;
+            transition: none;
         }
         
         .falling-object {
@@ -62,6 +63,23 @@
             display: none;
         }
         
+        #interactPrompt {
+            position: absolute;
+            font-size: 14px;
+            color: #ffff00;
+            display: none;
+            pointer-events: none;
+        }
+        
+        #redButton {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background-color: #ff0000;
+            border: 2px solid #990000;
+            display: none;
+        }
+        
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -81,6 +99,8 @@
     <h1>Catch The Falling Objects...</h1>
     <div id="gameContainer">
         <div id="player"></div>
+        <div id="redButton"></div>
+        <div id="interactPrompt">Press SPACE to interact</div>
     </div>
     <div id="score">Score: 0</div>
     <div id="gameOver">GAME OVER</div>
@@ -91,10 +111,17 @@
         const player = document.getElementById('player');
         const scoreDisplay = document.getElementById('score');
         const gameOverDisplay = document.getElementById('gameOver');
+        const redButton = document.getElementById('redButton');
+        const interactPrompt = document.getElementById('interactPrompt');
         
         let score = 0;
         let playerX = 275;
+        let playerY = 740;
         let gameOver = false;
+        let inEndingSequence = false;
+        let canInteract = false;
+        let interacted = false;
+        
         const playerWidth = 50;
         const playerHeight = 60;
         const containerWidth = 600;
@@ -104,6 +131,13 @@
         const keys = {};
         document.addEventListener('keydown', (e) => {
             keys[e.key] = true;
+            
+            if (e.key === ' ' && canInteract && !interacted) {
+                e.preventDefault();
+                playSound();
+                interacted = true;
+                interactPrompt.style.display = 'none';
+            }
         });
         document.addEventListener('keyup', (e) => {
             keys[e.key] = false;
@@ -111,18 +145,53 @@
         
         // Smooth movement loop
         setInterval(() => {
-            if (keys['ArrowLeft'] && playerX > 0) {
-                playerX -= 8;
+            if (!gameOver && !inEndingSequence) {
+                if (keys['ArrowLeft'] && playerX > 0) {
+                    playerX -= 8;
+                }
+                if (keys['ArrowRight'] && playerX < containerWidth - playerWidth) {
+                    playerX += 8;
+                }
+                player.style.left = playerX + 'px';
+                player.style.bottom = playerY + 'px';
+            } else if (inEndingSequence) {
+                // Move right during ending sequence
+                if (keys['ArrowRight'] && playerX < containerWidth + 200) {
+                    playerX += 8;
+                    player.style.left = playerX + 'px';
+                }
+                
+                // Check if off screen right
+                if (playerX > containerWidth) {
+                    transitionToButtonScene();
+                }
+                
+                // Check distance to button for interaction
+                const buttonCenterX = redButton.offsetLeft + 20;
+                const buttonCenterY = containerHeight - 110;
+                const playerCenterX = playerX + playerWidth / 2;
+                const playerCenterY = playerY + playerHeight / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(playerCenterX - buttonCenterX, 2) + 
+                    Math.pow(playerCenterY - buttonCenterY, 2)
+                );
+                
+                if (distance < 60) {
+                    canInteract = true;
+                    interactPrompt.style.display = 'block';
+                    interactPrompt.style.left = (buttonCenterX - 40) + 'px';
+                    interactPrompt.style.top = (buttonCenterY - 40) + 'px';
+                } else {
+                    canInteract = false;
+                    interactPrompt.style.display = 'none';
+                }
             }
-            if (keys['ArrowRight'] && playerX < containerWidth - playerWidth) {
-                playerX += 8;
-            }
-            player.style.left = playerX + 'px';
         }, 30);
         
         // Spawn falling objects
         function spawnObject() {
-            if (gameOver) return;
+            if (gameOver || inEndingSequence) return;
             
             const fallingObject = document.createElement('div');
             fallingObject.className = 'falling-object';
@@ -153,6 +222,7 @@
                 // Game over if object touches ground
                 if (top >= containerHeight) {
                     gameOver = true;
+                    inEndingSequence = true;
                     gameOverDisplay.style.display = 'block';
                     fallingObject.remove();
                     clearInterval(fallInterval);
@@ -160,7 +230,35 @@
             }, 30);
         }
         
-        // Spawn objects every 1200ms for catchable gameplay
+        function transitionToButtonScene() {
+            // Pan camera and show button
+            player.style.left = '-50px';
+            redButton.style.display = 'block';
+            redButton.style.left = '400px';
+            redButton.style.bottom = '100px';
+            gameContainer.style.backgroundColor = '#0a0a0a';
+        }
+        
+        function playSound() {
+            // Create oscillator for a beep sound
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+        
+        // Spawn objects every 1200ms
         setInterval(spawnObject, 1200);
     </script>
 </body>
