@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deals</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            color: black;
+            margin-top: 0;
+        }
+        
+        .nav-buttons {
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background-color: #c0c0c0;
+            color: black;
+            border: 2px outset #dfdfdf;
+            padding: 4px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            margin-right: 5px;
+        }
+        
+        button:active {
+            border-style: inset;
+        }
+        
+        .coupon-section {
+            border: 2px outset #dfdfdf;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #c0c0c0;
+            display: inline-block;
+        }
+        
+        input {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 2px inset #dfdfdf;
+            background-color: white;
+            color: black;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>superfuckingluigi</h1>
+    <div class="nav-buttons">
+        <button onclick="window.location.href='index.html'">home</button>
+        <button onclick="window.location.href='reviews.html'">reviews</button>
+        <button onclick="window.location.href='deals.html'">deals</button>
+    </div>
+    
+    <h2>Deals</h2>
+    
+    <div class="coupon-section">
+        <input type="text" id="couponInput" placeholder="Enter coupon code">
+        <button onclick="validateCoupon()">Enter</button>
+        <div id="errorMessage"></div>
+    </div>
+    
+    <script>
+        function validateCoupon() {
+            const errorDiv = document.getElementById('errorMessage');
+            const inputValue = document.getElementById('couponInput').value;
+            
+            if (inputValue.trim() !== '') {
+                errorDiv.textContent = 'Invalid coupon code.';
+                document.getElementById('couponInput').value = '';
+            }
+        }
+        
+        document.getElementById('couponInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                validateCoupon();
+            }
+        });
+    </script>
+</body>
+</html>
