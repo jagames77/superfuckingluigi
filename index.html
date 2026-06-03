@@ -19,24 +19,23 @@
             padding: 20px;
         }
         
-        .review-section {
-            padding: 20px;
-            border: 1px solid #ccc;
-            margin: 0 20px;
-        }
-        
-        .review-section p {
-            color: black;
-            margin: 10px 0;
+        .nav-buttons {
+            padding: 0 20px;
         }
         
         button {
-            background-color: #808080;
+            background-color: #c0c0c0;
             color: black;
-            border: none;
-            padding: 10px 20px;
+            border: 2px outset #dfdfdf;
+            padding: 4px 12px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+            margin-right: 5px;
+        }
+        
+        button:active {
+            border-style: inset;
         }
         
         .slide-container {
@@ -71,9 +70,10 @@
 </head>
 <body>
     <h1>superfuckingluigi</h1>
-    <div class="review-section">
-        <p>Customer Reviews</p>
-        <button>Leave a Review</button>
+    <div class="nav-buttons">
+        <button onclick="window.location.href='index.html'">home</button>
+        <button onclick="window.location.href='reviews.html'">customer reviews</button>
+        <button>deals</button>
     </div>
     <div class="slide-container">
         <div class="sliding-image">
