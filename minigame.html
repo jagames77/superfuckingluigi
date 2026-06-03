@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch The Objects</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: black;
+            margin: 0 0 20px 0;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #87CEEB;
+            border: 3px solid black;
+            overflow: hidden;
+        }
+        
+        #player {
+            position: absolute;
+            bottom: 10px;
+            left: 275px;
+            width: 50px;
+            height: 60px;
+            background-color: #FF0000;
+            border: 2px solid black;
+        }
+        
+        .falling-object {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #FFD700;
+            border: 2px solid black;
+        }
+        
+        #score {
+            font-size: 24px;
+            margin-top: 20px;
+            color: black;
+        }
+        
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Catch The Falling Objects!</h1>
+    <div id="gameContainer">
+        <div id="player"></div>
+    </div>
+    <div id="score">Score: 0</div>
+    <button onclick="window.location.href='reviews.html'">Back to Reviews</button>
+
+    <script>
+        const gameContainer = document.getElementById('gameContainer');
+        const player = document.getElementById('player');
+        const scoreDisplay = document.getElementById('score');
+        
+        let score = 0;
+        let playerX = 275;
+        const playerWidth = 50;
+        const playerHeight = 60;
+        const containerWidth = 600;
+        const containerHeight = 400;
+        
+        // Player movement
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && playerX > 0) {
+                playerX -= 20;
+            } else if (e.key === 'ArrowRight' && playerX < containerWidth - playerWidth) {
+                playerX += 20;
+            }
+            player.style.left = playerX + 'px';
+        });
+        
+        // Spawn falling objects
+        function spawnObject() {
+            const fallingObject = document.createElement('div');
+            fallingObject.className = 'falling-object';
+            const randomX = Math.random() * (containerWidth - 30);
+            fallingObject.style.left = randomX + 'px';
+            fallingObject.style.top = '0px';
+            gameContainer.appendChild(fallingObject);
+            
+            let top = 0;
+            const speed = 3;
+            
+            const fallInterval = setInterval(() => {
+                top += speed;
+                fallingObject.style.top = top + 'px';
+                
+                // Check collision with player
+                if (
+                    top + 30 > containerHeight - playerHeight &&
+                    randomX < playerX + playerWidth &&
+                    randomX + 30 > playerX
+                ) {
+                    score++;
+                    scoreDisplay.textContent = 'Score: ' + score;
+                    fallingObject.remove();
+                    clearInterval(fallInterval);
+                }
+                
+                // Remove if off screen
+                if (top > containerHeight) {
+                    fallingObject.remove();
+                    clearInterval(fallInterval);
+                }
+            }, 30);
+        }
+        
+        // Spawn objects every 800ms
+        setInterval(spawnObject, 800);
+    </script>
+</body>
+</html>
